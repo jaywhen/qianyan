@@ -5,8 +5,7 @@ import Button from "../Button";
 
 const BasicCard = () => {
   useEffect(() => {
-    let platform = navigator?.userAgentData?.platform || navigator?.platform || 'unknown'
-    alert(platform)
+    alert(navigator.platform)
   }, [])
   const ref = useRef<HTMLDivElement>(null)
   const [content, setContent] = useState('Typing something...');

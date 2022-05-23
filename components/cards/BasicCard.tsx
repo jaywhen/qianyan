@@ -1,11 +1,22 @@
 import { toPng } from "html-to-image"
 import html2canvas from "html2canvas";
-import { ChangeEvent, useCallback, useRef, useState } from "react"
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react"
 import Button from "../Button";
 
 const BasicCard = () => {
+  useEffect(() => {
+    alert(navigator.userAgentData.platform)
+  }, [])
   const ref = useRef<HTMLDivElement>(null)
   const [content, setContent] = useState('Typing something...');
+  const [isHidden, setIsHidden] = useState(true);
+  const [imgUrl, setImgUrl] = useState('');
+  const [imgWidth, setImgWidth] = useState('');
+  const [imgHight, setImgHight] = useState('');
+
+  const onClose = () => {
+    setIsHidden(true);
+  }
 
   const typing = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
@@ -17,10 +28,16 @@ const BasicCard = () => {
     }
     toPng(ref.current, { cacheBust: true, })
       .then((dataUrl) => {
-        const link = document.createElement('a')
-        link.download = 'my-image-name.png'
-        link.href = dataUrl
-        link.click()
+        // const link = document.createElement('a')
+        // link.download = 'my-image-name.png'
+        // link.href = dataUrl
+        // link.click()
+        const hight = ref.current?.clientHeight
+        const width = ref.current?.clientWidth
+        setImgHight(`${hight}px`)
+        setImgWidth(`${width}px`)
+        setImgUrl(dataUrl)
+        setIsHidden(false);
       })
       .catch((err) => {
         console.log(err)
@@ -35,15 +52,21 @@ const BasicCard = () => {
       scale: window.devicePixelRatio * 12
     }).then(canvas => {
       const dataUrl = canvas.toDataURL('image/png');
-      const link = document.createElement('a')
-      link.download = 'my-image-name.png'
-      link.href = dataUrl
-      link.click()
+      // const link = document.createElement('a')
+      // link.download = 'my-image-name.png'
+      // link.href = dataUrl
+      // link.click()
+      const hight = ref.current?.clientHeight
+      const width = ref.current?.clientWidth
+      setImgHight(`${hight}px`)
+      setImgWidth(`${width}px`)
+      setImgUrl(dataUrl)
+      setIsHidden(false);
     })
   }, [ref])
   // bg-gradient-[-50deg] from-[#ffffff80] to-[#ffffffd9]
   return (
-    <div className='flex justify-center flex-col items-center'>
+    <div className='relative flex justify-center flex-col items-center'>
       <textarea placeholder='Typing something...'
         onChange={typing}
         wrap='hard'
@@ -62,6 +85,11 @@ const BasicCard = () => {
       <div className='w-full flex justify-center space-x-6 mt-6'>
         <Button text='html2image' onClick={onButtonClick} />
         <Button text='html2canvas' onClick={html2can} />
+      </div>
+      <div style={{ display: isHidden ? 'none' : 'flex' }} onClick={() => setIsHidden(true)} className='fixed top-0 justify-center items-center h-full min-w-full z-10 bg-white/30 backdrop-blur-lg'>
+        <div id='saveImg' className='left-1/2 top-1/2'>
+          <img width={imgWidth} height={imgHight} src={imgUrl} alt="pic" />
+        </div>
       </div>
     </div>
   )

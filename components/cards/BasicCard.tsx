@@ -1,12 +1,11 @@
 import { toPng } from "html-to-image"
-import html2canvas from "html2canvas";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react"
 import Button from "../Button";
 
 const BasicCard = () => {
-  useEffect(() => {
-    alert(navigator.platform)
-  }, [])
+  // useEffect(() => {
+  //   alert(navigator.platform)
+  // }, [])
   const ref = useRef<HTMLDivElement>(null)
   const [content, setContent] = useState('Typing something...');
   const [isHidden, setIsHidden] = useState(true);
@@ -26,7 +25,20 @@ const BasicCard = () => {
     if (ref.current === null) {
       return
     }
-    toPng(ref.current, { cacheBust: true, })
+    const node = ref.current;
+    const scale = 12;
+    const style = {
+      transform: 'scale(' + scale + ')',
+      'transform-origin': 'top left',
+      width: node.offsetWidth + "px",
+      height: node.offsetHeight + "px",
+    }
+    const param = {
+      height: node.offsetHeight * scale,
+      width: node.offsetWidth * scale,
+      style
+    }
+    toPng(node, param)
       .then((dataUrl) => {
         // const link = document.createElement('a')
         // link.download = 'my-image-name.png'
@@ -44,26 +56,6 @@ const BasicCard = () => {
       })
   }, [ref])
 
-  const html2can = useCallback(() => {
-    if (ref.current === null) {
-      return
-    }
-    html2canvas(ref.current, {
-      scale: window.devicePixelRatio * 12
-    }).then(canvas => {
-      const dataUrl = canvas.toDataURL('image/png');
-      // const link = document.createElement('a')
-      // link.download = 'my-image-name.png'
-      // link.href = dataUrl
-      // link.click()
-      const hight = ref.current?.clientHeight
-      const width = ref.current?.clientWidth
-      setImgHight(`${hight}px`)
-      setImgWidth(`${width}px`)
-      setImgUrl(dataUrl)
-      setIsHidden(false);
-    })
-  }, [ref])
   // bg-gradient-[-50deg] from-[#ffffff80] to-[#ffffffd9]
   return (
     <div className='relative flex justify-center flex-col items-center'>
@@ -84,7 +76,6 @@ const BasicCard = () => {
       </div>
       <div className='w-full flex justify-center space-x-6 mt-6'>
         <Button text='html2image' onClick={onButtonClick} />
-        <Button text='html2canvas' onClick={html2can} />
       </div>
       <div style={{ display: isHidden ? 'none' : 'flex' }} onClick={() => setIsHidden(true)} className='fixed top-0 justify-center items-center h-full min-w-full z-10 bg-white/30 backdrop-blur-lg'>
         <div id='saveImg' className='left-1/2 top-1/2'>

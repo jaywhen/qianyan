@@ -11,7 +11,7 @@ const CommonLayout = ({children}:any) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header>
-        <Image src='/logo.svg' alt='logo' width='146px' height='24' />
+        <Image src='/logo-test.svg' alt='logo' width='205' height='44' />
       </header>
       <main className='grow'>
         {children}

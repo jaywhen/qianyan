@@ -1,25 +1,18 @@
+/* eslint-disable @next/next/no-img-element */
+import { useEditorStore } from "@store/EditorContext";
 import { toPng } from "html-to-image"
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react"
+import Image from "next/image";
+import { ChangeEvent, forwardRef, useCallback, useEffect, useRef, useState } from "react"
 import { isMobileClient } from "../../lib";
 import Button from "../Button";
 
-const BasicCard = () => {
-  useEffect(() => {
-    setIsMobile(isMobileClient());
-  }, [])
-  const ref = useRef<HTMLDivElement>(null)
-  const [content, setContent] = useState('Typing something...');
-  const [isHidden, setIsHidden] = useState(true);
-  const [imgUrl, setImgUrl] = useState('');
-  const [imgWidth, setImgWidth] = useState('');
-  const [imgHight, setImgHight] = useState('');
-  const [isMobile, setIsMobile] = useState(false);
+const BasicCard = (props: any, ref: any) => {
+  // useEffect(() => {
+  //   setIsMobile(isMobileClient());
+  // }, [])
+  // const ref = useRef<HTMLDivElement>(null)
 
-  const typing = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
-  }
-
-  const onButtonClick = useCallback(() => {
+  const saveImg = useCallback(() => {
     if (ref.current === null) {
       return
     }
@@ -38,51 +31,33 @@ const BasicCard = () => {
     }
     toPng(node, param)
       .then((dataUrl) => {
-        const hight = ref.current?.clientHeight
-        const width = ref.current?.clientWidth
-        setImgHight(`${hight}px`)
-        setImgWidth(`${width}px`)
-        setImgUrl(dataUrl)
-        setIsHidden(false);
-        if(!isMobile) {
           const link = document.createElement('a')
           link.download = 'qianyan.png'
           link.href = dataUrl
           link.click()
-        }
+
       })
       .catch((err) => {
         console.log(err)
       })
-  }, [ref, isMobile])
-
+  }, [ref])
+  const editorState = useEditorStore() as any;
   return (
-    <div className='relative flex justify-center flex-col items-center'>
-      <textarea placeholder='Typing something...'
-        onChange={typing}
-        wrap='hard'
-        autoFocus={true}
-        className='caret-pink-500 my-4 p-2 shadow-md text-lg w-80'></textarea>
-      <div ref={ref} style={{ background: "linear-gradient(135deg, rgb(200, 46, 150), rgb(86, 51, 186))" }} className='p-8 w-[24rem] h-[18rem]  sm:w-[42rem] sm:h-[28rem] bg-gradient-135 from-[#0a6d53bc] via-[#4269d3dc] to-[#6f63daca] shadow-xl'>
-        <div className='w-full h-full flex flex-col justify-center items-center'>
-          <div style={{ background: "linear-gradient(-50deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.85) 100%)", color: "rgba(5, 5, 5, 0.9)" }} className='p-4 text-xl sm:text-2xl border-2 border-slate-100 font-SourceCodePro leading-relaxed flex backdrop-blur-md text-black w-full h-8/12 flex-1 rounded-xl shadow-xl'>
-            {content}
-          </div>
-          <div className='text-[#ffffff74] text-md self-end mt-2 font-Righteous'>
-            qianyan
-          </div>
+    <>
+      <div ref={ref} className="flex font-serif flex-col items-center py-4 px-6 bg-white w-[320px] h-[660px]">
+        <img className="drop-shadow-xl rounded" alt="cover" src={editorState.cover} width="270px" height="270px" />
+        <div className="mt-6 py-4 leading-loose text-xl whitespace-pre-line w-full border-t-2 border-b-2 border-dashed border-[#2C2C2C]">
+          {editorState.content}
+        </div>
+        <div className="text-lg mt-4 text-[#414141] self-end">
+          {`「${editorState.name}」—— ${editorState.author}`}
+        </div>
+        <div className="self-end mt-8">
+          <Image src="/card-logo.svg" alt="card-log" width="86px" height="17px" />
         </div>
       </div>
-      <div className='w-full flex justify-center space-x-6 mt-6'>
-        <Button text='html2image' onClick={onButtonClick} />
-      </div>
-      <div style={{ display: isHidden ? 'none' : 'flex' }} onClick={() => setIsHidden(true)} className='fixed top-0 justify-center items-center h-full min-w-full z-10 bg-white/30 backdrop-blur-lg'>
-        <div id='saveImg' className='left-1/2 top-1/2'>
-          <img width={imgWidth} height={imgHight} src={imgUrl} alt="pic" />
-        </div>
-      </div>
-    </div>
+    </>
   )
 }
 
-export default BasicCard;
+export default forwardRef(BasicCard);

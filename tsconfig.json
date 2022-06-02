@@ -14,8 +14,13 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": [
-      "./types/userAgentData"
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@store/*": ["store/*"],
+    },
+    "typeRoots": [
+      "./types/*"
     ]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

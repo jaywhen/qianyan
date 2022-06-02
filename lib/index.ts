@@ -8,3 +8,15 @@ export const isMobileClient = ():boolean => {
     return !pc_list.includes(clientType)
   }
 }
+
+export const getImgFileBase64 = (file:Blob) => {
+  return new Promise(resolve => {
+    let baseUrl = "";
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      baseUrl = reader.result as string;
+      resolve(baseUrl);
+    }
+  })
+}

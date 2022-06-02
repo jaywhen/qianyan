@@ -1,24 +1,19 @@
+import Navbar from "@components/Navbar";
 import Head from "next/head";
-import Image from "next/image";
 import { ReactElement } from "react";
 
 const CommonLayout = ({children}:any) => {
   return (
-    <div className='flex flex-col justify-center items-center py-6 px-4 mx-auto min-h-screen'>
+    <div className='flex flex-col justify-center items-center px-6 mx-auto min-h-screen'>
       <Head>
         <title>qianyan</title>
-        <meta name="description" content="Generated nice card" />
+        <meta name="description" content="Generated nice lyric\movie\book card" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header>
-        <Image src='/logo-test.svg' alt='logo' width='205' height='44' />
-      </header>
-      <main className='grow'>
+      <Navbar />
+      <main className='grow w-full flex'>
         {children}
       </main>
-      <footer className='opacity-50'>
-        &copy;qianyan(beta)
-      </footer>
     </div>
   )
 }

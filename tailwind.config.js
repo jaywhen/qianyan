@@ -7,11 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'GrapeNuts': ['"Grape Nuts"'],
-        'SourceCodePro': ['"Source Code Pro"'],
-        'Comfortaa': ['"Comfortaa"'],
-        'Poppins': ['"Poppins"'],
-        'Righteous': ['"Righteous"'],
+        sans: ['"Noto Sans SC"', '"Open Sans"'],
+        serif: ['"Noto Serif SC"','"EB Garamond"'],
       }
     },
   },

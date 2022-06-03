@@ -4,12 +4,16 @@ import { useDispatch, useEditorStore } from '@store/EditorContext'
 import { toPng } from 'html-to-image';
 import { getImgFileBase64 } from 'lib';
 import type { NextPage } from 'next'
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 const Home: NextPage = () => {
   const dispatch = useDispatch() as any;
   const editorState = useEditorStore() as any;
   const ref = useRef<HTMLDivElement>(null);
+
+  // button state test
+  const [loading, setLoading] = useState(false);
+
 
   const handleChange = async (e:any) => {
     const file = e.target.files[0];
@@ -18,9 +22,10 @@ const Home: NextPage = () => {
   }
 
   const handleSave = useCallback(() => {
+    setLoading(true);
     if (ref.current === null) return;
     const node = ref.current;
-    const scale = 3;
+    const scale = 6;
     const style = {
       transform: 'scale(' + scale + ')',
       'transform-origin': 'top left',
@@ -35,9 +40,10 @@ const Home: NextPage = () => {
     toPng(node, param)
       .then((dataUrl) => {
         const link = document.createElement('a')
-        link.download = 'qianyan.png'
+        link.download = 'your-masterpiece.png'
         link.href = dataUrl
         link.click()
+        setLoading(false)
       })
       .catch((err) => {
         console.log(err)
@@ -87,9 +93,13 @@ const Home: NextPage = () => {
       </div>
       <div className="grow py-4 bg-[#F5F5F5] flex flex-col items-center">
         <BasicCard ref={ref} />
-        <button className="flex justify-center items-center font-sans text-2xl text-[#3b3b3b] mt-6 w-[320px] h-14 rounded-md shadow-md bg-[#ffffff]" 
+        <button disabled={loading} className="flex justify-center items-center font-sans text-2xl text-[#3b3b3b] mt-6 w-[320px] h-14 rounded-md shadow-md bg-[#fff]" 
           onClick={handleSave}>
-            save
+            {loading ? 
+              <span className="h-5 w-5 mr-3 border-2 border-t-transparent border-solid rounded-full border-[#aca8a8c9] animate-spin"></span>
+              : null
+            }
+            {loading ? 'Processing...' : 'Save'}
         </button>
       </div>
       <div className="w-[15%] flex justify-center items-center">

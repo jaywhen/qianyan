@@ -1,18 +1,19 @@
 import Image from "next/image";
+import Link from "next/link";
 import { FC } from "react";
 import NavItem from "./NavItem";
 
 const navs: NavItemProps[] = [
   {
+    key: 1,
+    name: "About",
+    url: "/about"
+  },
+  {
     key: 0,
     name: "Github",
     url: "https://github.com/jaywhen"
   },
-  {
-    key: 1,
-    name: "About",
-    url: "/about"
-  }
 ]
 
 const Navbar: FC = () => {

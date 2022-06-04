@@ -2,9 +2,10 @@
 import BasicCard from '@components/cards/BasicCard';
 import { useDispatch, useEditorStore } from '@store/EditorContext'
 import { toPng } from 'html-to-image';
-import { getImgFileBase64 } from 'lib';
+import { getCroppedImg, getImgFileBase64, rotateSize } from 'lib';
 import type { NextPage } from 'next'
 import { useCallback, useRef, useState } from 'react';
+import Cropper from 'react-easy-crop';
 
 const Home: NextPage = () => {
   const dispatch = useDispatch() as any;
@@ -14,12 +15,33 @@ const Home: NextPage = () => {
   // button state test
   const [loading, setLoading] = useState(false);
 
+  // crop
+  const [cropImg, setCropImg] = useState('');
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels)
+  }, [])
+  const onCropOKClick = useCallback(async () => {
+    try {
+      const cropedImg = await getCroppedImg(
+        cropImg,
+        croppedAreaPixels,
+      )
+      dispatch({ type: "changeCover", payload: cropedImg });
+      setCropImg("");
+    } catch(e) {
+      console.log(e)
+    }
+  }, [cropImg, croppedAreaPixels, dispatch])
 
-  const handleChange = async (e:any) => {
+  const handleChange = async (e: any) => {
     const file = e.target.files[0];
-    const imgUrl = await getImgFileBase64(file)
-    dispatch({ type: "changeCover", payload: imgUrl });
+    const imgUrl = await getImgFileBase64(file) as string;
+    // dispatch({ type: "changeCover", payload: imgUrl });
+    setCropImg(imgUrl)
   }
+
 
   const handleSave = useCallback(() => {
     setLoading(true);
@@ -92,14 +114,30 @@ const Home: NextPage = () => {
         </div>
       </div>
       <div className="grow py-4 bg-[#F5F5F5] flex flex-col items-center">
+        {cropImg ?
+          <div className="fixed flex flex-col justify-center items-center top-0 z-10 w-full h-full backdrop-blur-md bg-white/30">
+            <div className="font-serif text-2xl font-bold text-[#232323] mb-4">Resizing ...</div>
+            <div className="relative shadow-md shadow-[#0b0a0a] w-[800px] h-[600px] bg-[#483737]">
+              <Cropper
+                image={cropImg}
+                crop={crop}
+                aspect={1 / 1}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+              />
+            </div>
+            <button onClick={onCropOKClick} className="mt-4 w-60 h-14 bg-[#ffffff] shadow-lg">OK</button>
+          </div> :
+          null
+        }
         <BasicCard ref={ref} />
-        <button disabled={loading} className="flex justify-center items-center font-sans text-2xl text-[#3b3b3b] mt-6 w-[320px] h-14 rounded-md shadow-md bg-[#fff]" 
+        <button disabled={loading} className="flex justify-center items-center font-sans text-2xl text-[#3b3b3b] mt-6 w-[320px] h-14 rounded-md shadow-md bg-[#fff]"
           onClick={handleSave}>
-            {loading ? 
-              <span className="h-5 w-5 mr-3 border-2 border-t-transparent border-solid rounded-full border-[#aca8a8c9] animate-spin"></span>
-              : null
-            }
-            {loading ? 'Processing...' : 'Save'}
+          {loading ?
+            <span className="h-5 w-5 mr-3 border-2 border-t-transparent border-solid rounded-full border-[#aca8a8c9] animate-spin"></span>
+            : null
+          }
+          {loading ? 'Processing...' : 'Save'}
         </button>
       </div>
       <div className="w-[15%] flex justify-center items-center">

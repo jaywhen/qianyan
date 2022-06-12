@@ -38,7 +38,7 @@ const Home: NextPage = () => {
         console.log(err)
       })
   }, [])
-
+  
   return (
     <div className="grow flex w-full">
       <Editor />

@@ -37,8 +37,8 @@ const CoverUploader = () => {
   }
   
   return (
-    <div className="flex flex-col">
-      <div className="font-semibold">Cover</div>
+    <div className="flex flex-col space-y-4">
+      <div className="font-bold text-xl">Cover</div>
       <label className="w-full rounded" htmlFor="uploader">
         <img className="rounded drop-shadow-md"
           src={cover} alt="cover" width="100%" height="100%" />

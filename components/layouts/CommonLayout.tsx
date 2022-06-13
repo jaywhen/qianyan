@@ -4,7 +4,7 @@ import { ReactElement } from "react";
 
 const CommonLayout = ({children}:any) => {
   return (
-    <div className='flex flex-col justify-center items-center px-6 mx-auto min-h-screen'>
+    <div className='flex flex-col justify-center items-center mx-auto min-h-screen'>
       <Head>
         <title>qianyan</title>
         <meta name="description" content="Generated nice lyric\movie\book card" />

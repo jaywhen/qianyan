@@ -5,7 +5,7 @@ import NameInput from "./inputs/NameInput";
 
 const Editor = () => {
   return (
-    <div className="w-[15%] h-full space-y-6 pr-4 flex flex-col">
+    <div className="w-[15%] h-full space-y-6 pr-4 py-4 flex flex-col">
       <CoverUploader />
       <ContentInput />
       <NameInput />

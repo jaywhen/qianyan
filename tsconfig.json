@@ -20,7 +20,7 @@
       "@store/*": ["store/*"],
     },
     "typeRoots": [
-      "./types/*"
+      "./types/userAgentData",
     ]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

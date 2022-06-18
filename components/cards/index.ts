@@ -14,7 +14,12 @@ const cards: Card[] = [
     name: 'Nova',
     author: 'jaywhen',
     homepage: 'https://jaywhen.com',
-  }
+  },
+  {
+    name: 'Memo',
+    author: 'jaywhen',
+    homepage: 'https://jaywhen.com',
+  },
 ]
 
 export default cards;

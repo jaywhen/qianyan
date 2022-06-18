@@ -12,7 +12,7 @@ const BasicCard = forwardRef((props: any, ref: ForwardedRef<HTMLDivElement>) => 
     <div ref={ref} className="flex justify-center items-center font-serif py-8 bg-white w-[380px]">
       <div className="flex flex-col font-serif items-center py-4 px-6 bg-white w-[320px] shadow-md">
         <img className="drop-shadow-xl rounded" alt="cover" src={cover} width="270px" height="270px" />
-        <div className="mt-6 py-4 leading-loose text-xl whitespace-pre-line w-full border-t-2 border-b-2 border-dashed border-[#2C2C2C]">
+        <div className="mt-6 py-4 leading-loose text-xl whitespace-pre-line w-full border-t-2 border-b-2 border-dashed border-[#888888]">
           {content}
         </div>
         <div className="text-lg mt-4 text-[#414141] self-end">

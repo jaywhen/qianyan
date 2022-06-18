@@ -1,6 +1,7 @@
 import CardInfoList from '@components/cardbar/CardInfoList';
 import BasicCard from '@components/cards/BasicCard';
 import NovaCard from '@components/cards/NovaCard';
+import MemoCard from '@components/cards/MemoCard';
 import Editor from '@components/Editor';
 import useStore from '@store/useStore';
 import { toPng } from 'html-to-image';
@@ -45,6 +46,7 @@ const Home: NextPage = () => {
   const cards: any = {
     'Basic': <BasicCard ref={ref} />,
     'Nova': <NovaCard ref={ref} />,
+    'Memo': <MemoCard ref={ref} />,
   }
 
   return (

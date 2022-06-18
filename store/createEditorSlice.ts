@@ -16,10 +16,10 @@ const createEditorSlice = (
   set: SetState<AppState>,
   get: GetState<AppState>
 ) => ({
-  cover: '/cover.png',
-  content: '有时候，有时候\n我会相信一切有尽头\n相聚离开，都有时候\n没有什么是永垂不朽',
-  name: '红豆',
-  author: '林夕',
+  cover: '/cover.jpg',
+  content: '我住的城市从不下雪\n记忆却堆满冷的感觉\n思念的旺季\n霓虹扫过喧哗的街',
+  name: '圣诞结',
+  author: '何启弘',
   changeCover: (newCover: string) => {
     set((prev: AppState) => ({ ...prev, cover: newCover }))
   },

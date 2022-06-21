@@ -5,8 +5,8 @@ const AuthorInput = () => {
   const author = useStore(state => state.author);
 
   return (
-    <div className="flex flex-col space-y-4">
-      <label className="font-bold text-xl" htmlFor="author">Author/Ref</label>
+    <div className="flex flex-col">
+      <label className="text-xl mb-2 font-serif" htmlFor="author">Author/Ref</label>
       <input className="h-12 p-2 text-xl shadow-md border-solid rounded-lg border-[#949494]"
         autoComplete="off"
         type="text"

@@ -5,8 +5,8 @@ const ContentInput = () => {
   const changeContent = useStore(state => state.changeContent);
 
   return (
-    <div className="flex flex-col space-y-4">
-      <label className="font-bold text-xl" htmlFor="content">Content</label>
+    <div className="flex flex-col">
+      <label className="text-xl mb-2 font-serif" htmlFor="content">Content</label>
       <textarea className="shadow-md p-2 text-xl"
         name="content" id="content" cols={30} rows={5}
         value={content}

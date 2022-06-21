@@ -35,28 +35,32 @@ const CoverUploader = () => {
     const imgUrl = await getImgFileBase64(imgFile) as string;
     setCropImg(imgUrl)
   }
-  
+
   return (
-    <div className="flex flex-col space-y-4">
-      <div className="font-bold text-xl">Cover</div>
+    <div className="flex flex-col">
+      <div className="text-xl mb-2 font-serif">Cover</div>
       <label className="w-full rounded" htmlFor="uploader">
         <img className="rounded drop-shadow-md"
           src={cover} alt="cover" width="100%" height="100%" />
       </label>
       <input type="file" onChange={chooseImgFromLocal} name="cover" id="uploader" hidden accept="image/*" />
       {cropImg ?
-        <div className="fixed flex flex-col justify-center items-center left-0 top-0 z-10 w-full h-full backdrop-blur-md bg-white/30">
-          <div className="font-serif text-2xl font-bold text-[#232323] mb-4">Resizing ...</div>
-          <div className="relative shadow-md shadow-[#0b0a0a] w-[800px] h-[600px] bg-[#483737]">
-            <Cropper
-              image={cropImg}
-              crop={crop}
-              aspect={1 / 1}
-              onCropChange={setCrop}
-              onCropComplete={onCropComplete}
-            />
+        <div onClick={e => setCropImg('')}
+          className="fixed flex justify-center items-center left-0 top-0 z-10 w-full h-full backdrop-blur-md bg-white/30">
+          <div onClick={e => e.stopPropagation()}
+            className="flex flex-col justify-center items-center">
+            <div className="font-serif text-2xl font-bold text-[#232323] mb-4">Resizing ...</div>
+            <div className="relative shadow-md shadow-[#0b0a0a] w-[800px] h-[600px] bg-[#483737]">
+              <Cropper
+                image={cropImg}
+                crop={crop}
+                aspect={1 / 1}
+                onCropChange={setCrop}
+                onCropComplete={onCropComplete}
+              />
+            </div>
+            <button onClick={onCropOKClick} className="mt-4 w-60 h-14 bg-[#ffffff] shadow-lg">OK</button>
           </div>
-          <button onClick={onCropOKClick} className="mt-4 w-60 h-14 bg-[#ffffff] shadow-lg">OK</button>
         </div> :
         null
       }
